@@ -8,6 +8,8 @@ let selectedItems;
 let usedItems;
 let boardItems;
 
+let isBoardLocked = false;
+
 $(document).ready(function () {
     let $board = $('#board-container');
     $board.hide();
@@ -27,6 +29,8 @@ function startGame() {
         $(this).remove();
     });
     $('#menu').hide(ANIMATION_DURATION, function () {
+        currentScore = 0;
+        $('#score').html(currentScore);
         setupTiles();
         setupTimer();
         $('#board-container').show(ANIMATION_DURATION);
@@ -65,10 +69,12 @@ function startGame() {
             let $cardWrapper = $('<div class="match-card-wrapper"></div>');
             $cardWrapper.attr("id", "card-" + item.id);
             $cardWrapper.click(function () {
-                $cardWrapper.toggleClass('flipped');
+                if(!isBoardLocked) {
+                    $cardWrapper.toggleClass('flipped');
 
-                item.isFlipped = !item.isFlipped;
-                onCardClick(item);
+                    item.isFlipped = !item.isFlipped;
+                    onCardClick(item);
+                }
             });
 
             let $card = $('<div class="match-card"></div>');
@@ -101,7 +107,7 @@ function startGame() {
 
     function onCardClick(item) {
         if (item.isFlipped) {
-            if (selectedItems.length === 1) {
+            if (selectedItems.length >= 1) {
                 selectedItems.push(item);
 
                 if (selectedItems[0].number === item.number) {
@@ -127,6 +133,7 @@ function startGame() {
                     }
                 } else {
                     // decrease the score
+                    isBoardLocked = true;
                     currentScore -= 2;
                     $('#score').html(currentScore);
 
@@ -140,6 +147,11 @@ function startGame() {
                                 }
                             });
                         });
+
+                        setTimeout(function() {
+                            isBoardLocked = false;
+                        }, ANIMATION_DURATION * 2);
+
                         selectedItems = [];
                     }, 750);
                 }
@@ -162,6 +174,15 @@ function startGame() {
 function endGame(didWin) {
     if(didWin) {
         Materialize.toast("Congrats, you won the game!", 5000);
+
+        let highScore = localStorage.getItem("high-score");
+        if(currentScore > parseInt(highScore)) {
+            localStorage.setItem("high-score", currentScore);
+            setTimeout(function() {
+                Materialize.toast("You set a new high score!", 4000);
+            }, 3000);
+            $('#high-score').html(currentScore);
+        }
     } else {
         Materialize.toast("You have lost the game and navigated to the home screen", 5000);
     }
