@@ -150,7 +150,7 @@ function startGame() {
 
                         setTimeout(function() {
                             isBoardLocked = false;
-                        }, ANIMATION_DURATION * 2);
+                        }, ANIMATION_DURATION);
 
                         selectedItems = [];
                     }, 750);
