@@ -50,7 +50,7 @@ function startGame(difficulty) {
         if (difficulty === 0) {
             numberList.splice(6, numberList.length - 6);
         } else if (difficulty === 1) {
-            numberList.splice(9, numberList.length - 9);
+            numberList.splice(9, numberList.length - 12);
         }
 
         const numberOfSwaps = 1000;
