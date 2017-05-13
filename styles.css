@@ -1,0 +1,64 @@
+.white-background {
+    background-color: #FFF;
+}
+
+.container {
+    margin-top: 64px;
+}
+
+.game-title {
+    font-size: 24px;
+}
+
+.padding {
+    padding: 16px;
+}
+
+body {
+    font-family: 'Dosis', serif !important;
+    font-size: 16px;
+}
+
+.match-card-wrapper {
+    width: 60px;
+    height: 90px;
+    margin: 8px;
+    perspective: 1000px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.match-card-wrapper.flipped .match-card {
+    transform: rotateY(180deg);
+}
+
+.match-card-wrapper, .front, .back, img {
+    width: 60px;
+    height: 90px;
+}
+
+.match-card {
+    transition: all 400ms ease-in-out;
+    transform-style: preserve-3d;
+    position: relative;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.front, .back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.front {
+    z-index: 2;
+    transform: rotateY(0deg);
+    background-color: blue;
+}
+
+.back {
+    transform: rotateY(180deg);
+    background-color: green;
+}

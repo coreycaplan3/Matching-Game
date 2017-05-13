@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matching Game</title>
+
+
+    <link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src="script.js"></script>
+</head>
+<body class="indigo lighten-5">
+<header>
+    <nav class="indigo">
+        <div class="nav-wrapper">
+            <span class="brand-logo hide-on-small-only" style="margin-left: 64px">MatchMe</span>
+            <span class="brand-logo hide-on-med-and-up center-align">MatchMe</span>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container row">
+        <div class="col s12">
+            <div class="z-depth-3 white-background">
+                <div id="banner" class="padding">
+                    <span class="game-title">Time: </span>
+                    <span class="game-title" id="time">0</span>
+                    &nbsp;
+                    <span class="game-title">Score: </span>
+                    <span class="game-title" id="score">0</span>
+
+                    <a class="btn-flat waves-effect waves-green right" href="#helpDialog">Help</a>
+                </div>
+
+                <div class="divider"></div>
+
+                <div id="board-container" class="padding hide">
+                    <div id="board"></div>
+
+                    <div class="row"></div>
+                    <div class="divider"></div>
+                    <div class="right-align">
+                        <a id="go-home" style="margin-top: 12px" class="btn-flat waves-effect waves-green">Go to Home</a>
+                    </div>
+                </div>
+
+                <div id="menu" class="padding">
+                    <h3 class="center-align padding">Menu</h3>
+                    <div class="row"></div>
+                    <div class="center-align">
+                        <a id="start" class="btn indigo waves-effect waves-light">Start</a>
+                    </div>
+                    <div class="row"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="helpDialog">
+        <div class="modal-content">
+            <h4>
+                Help
+            </h4>
+            <div class="row"></div>
+            <p>
+                After starting a game, you will be taken to a screen with <b>24</b> cards. These cards all have pictures
+                on them that represent different programming languages. Your goal is to match all of them as fast as
+                possible and in as few tries as possible. If you match a pair, you gain 5 points. For each pair you
+                miss, you lose 2 points.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <a class="btn-flat modal-actions modal-close waves-effect waves-green">Ok</a>
+        </div>
+    </div>
+
+</main>
+
+<script>
+
+    $(document).ready(function() {
+        $('.modal').modal();
+    });
+
+</script>
+
+</body>
+</html>
