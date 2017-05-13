@@ -8,35 +8,50 @@ let selectedItems;
 let usedItems;
 let boardItems;
 
+let isBoardLocked = false;
+
 $(document).ready(function () {
     let $board = $('#board-container');
     $board.hide();
     $board.removeClass("hide");
 
-    $('#start').click(function () {
-        startGame();
+    $('#start_easy').click(function () {
+        startGame(0);
+    });
+    $('#start_medium').click(function () {
+        startGame(1);
+    });
+    $('#start_hard').click(function () {
+        startGame(2);
     });
 
-    $('#go-home').click(function() {
-       endGame(false);
+    $('#go-home').click(function () {
+        endGame(false);
     });
 });
 
-function startGame() {
+function startGame(difficulty) {
     $('#board').children().each(function () {
         $(this).remove();
     });
     $('#menu').hide(ANIMATION_DURATION, function () {
-        setupTiles();
+        currentScore = 0;
+        $('#score').html(currentScore);
+        setupTiles(difficulty);
         setupTimer();
         $('#board-container').show(ANIMATION_DURATION);
     });
 
-    function setupTiles() {
+    function setupTiles(difficulty) {
         selectedItems = [];
         usedItems = [];
         boardItems = [];
         const numberList = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11];
+        if (difficulty === 0) {
+            numberList.splice(6, numberList.length - 6);
+        } else if (difficulty === 1) {
+            numberList.splice(9, numberList.length - 9);
+        }
 
         const numberOfSwaps = 1000;
         for (let i = 0; i < numberOfSwaps; i++) {
@@ -65,10 +80,12 @@ function startGame() {
             let $cardWrapper = $('<div class="match-card-wrapper"></div>');
             $cardWrapper.attr("id", "card-" + item.id);
             $cardWrapper.click(function () {
-                $cardWrapper.toggleClass('flipped');
+                if (!isBoardLocked) {
+                    $cardWrapper.toggleClass('flipped');
 
-                item.isFlipped = !item.isFlipped;
-                onCardClick(item);
+                    item.isFlipped = !item.isFlipped;
+                    onCardClick(item);
+                }
             });
 
             let $card = $('<div class="match-card"></div>');
@@ -101,7 +118,7 @@ function startGame() {
 
     function onCardClick(item) {
         if (item.isFlipped) {
-            if (selectedItems.length === 1) {
+            if (selectedItems.length >= 1) {
                 selectedItems.push(item);
 
                 if (selectedItems[0].number === item.number) {
@@ -119,18 +136,19 @@ function startGame() {
                     currentScore += 5;
                     $('#score').html(currentScore);
 
-                    if(usedItems.length === boardItems.length) {
+                    if (usedItems.length === boardItems.length) {
                         clearInterval(intervalId);
-                        setTimeout(function() {
+                        setTimeout(function () {
                             endGame(true);
                         }, 1000);
                     }
                 } else {
                     // decrease the score
+                    isBoardLocked = true;
                     currentScore -= 2;
                     $('#score').html(currentScore);
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         // Animate the cards back to their front state
                         selectedItems.forEach((card) => {
                             boardItems.forEach((item) => {
@@ -140,6 +158,11 @@ function startGame() {
                                 }
                             });
                         });
+
+                        setTimeout(function () {
+                            isBoardLocked = false;
+                        }, ANIMATION_DURATION);
+
                         selectedItems = [];
                     }, 750);
                 }
@@ -160,8 +183,17 @@ function startGame() {
 }
 
 function endGame(didWin) {
-    if(didWin) {
+    if (didWin) {
         Materialize.toast("Congrats, you won the game!", 5000);
+
+        let highScore = localStorage.getItem("high-score");
+        if (currentScore > parseInt(highScore)) {
+            localStorage.setItem("high-score", currentScore);
+            setTimeout(function () {
+                Materialize.toast("You set a new high score!", 4000);
+            }, 3000);
+            $('#high-score').html(currentScore);
+        }
     } else {
         Materialize.toast("You have lost the game and navigated to the home screen", 5000);
     }
@@ -170,7 +202,7 @@ function endGame(didWin) {
 
     clearInterval(intervalId);
 
-    $('#board-container').hide(ANIMATION_DURATION, function() {
+    $('#board-container').hide(ANIMATION_DURATION, function () {
         $('#menu').show(ANIMATION_DURATION);
     });
 

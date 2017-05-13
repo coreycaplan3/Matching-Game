@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="styles.css">
 
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
     <script src="script.js"></script>
 </head>
@@ -19,8 +18,8 @@
 <header>
     <nav class="indigo">
         <div class="nav-wrapper">
-            <span class="brand-logo hide-on-small-only" style="margin-left: 64px">MatchMe</span>
-            <span class="brand-logo hide-on-med-and-up center-align">MatchMe</span>
+            <span class="brand-logo hide-on-med-and-down" style="margin-left: 64px">MatchMe</span>
+            <span class="brand-logo hide-on-large-only center-align">MatchMe</span>
         </div>
     </nav>
 </header>
@@ -31,7 +30,7 @@
                 <div id="banner" class="padding">
                     <span class="game-title">Time: </span>
                     <span class="game-title" id="time">0</span>
-                    &nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <span class="game-title">Score: </span>
                     <span class="game-title" id="score">0</span>
 
@@ -46,15 +45,27 @@
                     <div class="row"></div>
                     <div class="divider"></div>
                     <div class="right-align">
-                        <a id="go-home" style="margin-top: 12px" class="btn-flat waves-effect waves-green">Go to Home</a>
+                        <a id="go-home" style="margin-top: 12px" class="btn-flat waves-effect waves-green">Go to
+                            Home</a>
                     </div>
                 </div>
 
                 <div id="menu" class="padding">
                     <h3 class="center-align padding">Menu</h3>
-                    <div class="row"></div>
+
                     <div class="center-align">
-                        <a id="start" class="btn indigo waves-effect waves-light">Start</a>
+                        <span class="game-title">High Score: </span>
+                        <span class="game-title" id="high-score">0</span>
+                    </div>
+
+                    <div class="row"></div>
+
+                    <div class="center-align">
+                        <a id="start_easy" style="width: 96px;" class="btn indigo waves-effect waves-light">Easy</a>
+                        <div class="row"></div>
+                        <a id="start_medium" style="width: 96px;" class="btn indigo waves-effect waves-light">Medium</a>
+                        <div class="row"></div>
+                        <a id="start_hard" style="width: 96px;" class="btn indigo waves-effect waves-light">Hard</a>
                     </div>
                     <div class="row"></div>
                 </div>
@@ -84,8 +95,15 @@
 
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.modal').modal();
+
+        let score = localStorage.getItem("high-score");
+        if (!score) {
+            score = 0;
+            localStorage.setItem("high-score", score);
+        }
+        $('#high-score').html(score);
     });
 
 </script>
